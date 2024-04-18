@@ -1,0 +1,45 @@
+###
+# WITH SPRING SECURITY
+@keycloak=http://localhost:8080
+@host=http://localhost:8081
+@user=admin
+@password=123
+###
+
+GET {{host}}/api/casos
+Authorization: Basic {{user}} {{password}}
+
+GET {{host}}/api/casos/3
+Authorization: Basic {{user}} {{password}}
+
+# CREATE NEW CASE
+POST {{host}}/api/casos
+Authorization: Basic {{user}} {{password}}
+Content-Type: application/json
+
+{
+    "id":"6",
+    "descricao":"Caso 06"
+}
+
+# DELETE CASE
+DELETE {{host}}/api/casos/1
+Authorization: Basic admin 123
+
+# TEST KEYCLOAK
+GET {{keycloak}}
+
+POST http://localhost:8080/realms/RealmWilCNJ/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=projeto&username=willian&password=123
+
+# Com cURL:
+# #!/bin/bash
+# #200 O método retorna uma lista.
+#
+# URL=${URL:-http://localhost:8081}
+# curl --user admin:123 \
+#      --write-out "\n%{http_code}" \                             ✔ 
+#      --header    "Accept: application/json" \
+#      ${URL}/api/casos
