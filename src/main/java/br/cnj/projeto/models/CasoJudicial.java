@@ -1,19 +1,21 @@
 package br.cnj.projeto.models;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-import br.cnj.projeto.util.CustoJudicial;
-import br.cnj.projeto.util.TaxaJudicial;
-
-@Component
+//@Component
+@Entity
+@Table(name = "casosjudiciais")
 public class CasoJudicial {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String descricao;
-    private CustoJudicial custoJudicial;
-    private TaxaJudicial taxaJudicial;
 
     public CasoJudicial() {
-        super();
     }
 
     public CasoJudicial(Long id, String descricao) {
@@ -21,23 +23,31 @@ public class CasoJudicial {
         this.descricao = descricao;
     }
 
-    public CasoJudicial(CustoJudicial custo, TaxaJudicial taxa) {
-        this.custoJudicial = custo;
-        this.taxaJudicial = taxa;
-    }
+    // public CasoJudicial(CustoJudicial custo, TaxaJudicial taxa) {
+    //     this.custoJudicial = custo;
+    //     this.taxaJudicial = taxa;
+    // }
 
-    public double finalizarCusto(double custo, String estado, int anoJulgamento) {
-        custo += custoJudicial.adicionarCusto(anoJulgamento);
-        custo += taxaJudicial.adcionarTaxa(estado);
+    // public double finalizarCusto(double custo, String estado, int anoJulgamento) {
+    //     custo += custoJudicial.adicionarCusto(anoJulgamento);
+    //     custo += taxaJudicial.adcionarTaxa(estado);
         
-        return custo;
-    }    
+    //     return custo;
+    // }    
 
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getDescricao() {
         return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

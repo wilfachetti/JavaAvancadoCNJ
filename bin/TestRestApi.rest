@@ -1,0 +1,87 @@
+###
+# WITH SPRING SECURITY
+@host=http://localhost:8081
+@user=willian
+@password=101184
+###
+
+# SIMPLE AUTH - GET ALL
+GET {{host}}/api/casos
+Authorization: Basic {{user}} {{password}}
+
+# GET FOR ID
+GET {{host}}/api/casos/3
+Authorization: Basic {{user}} {{password}}
+
+# CREATE NEW
+POST {{host}}/api/casos
+Authorization: Basic {{user}} {{password}}
+Content-Type: application/json
+
+{
+    "id":"6",
+    "descricao":"Caso 06"
+}
+
+# DELETE CASE
+DELETE {{host}}/api/casos/6
+Authorization: Basic {{user}} {{password}}
+
+
+# KEYCLOAK
+###
+@keycloak=http://localhost:8080
+@realm-token=realms/realm-cnj/protocol/openid-connect/token
+@client-id=login-projeto-cnj
+###
+
+# TEST
+GET {{keycloak}}
+
+# GET TOKEN FOR AUTHENTICATION
+POST {{keycloak}}/{{realm-token}}
+Content-Type: application/x-www-form-urlencoded
+grant_type=password&client_id={{client-id}}&username={{user}}&password={{password}}
+
+###
+@token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJNMzVIUS16VkJkeGwweWlXb0p3TkpqNkkxcXBKb2NId1Z5Z1NEaks2Z0pjIn0.eyJleHAiOjE3MTM5NzEzMTcsImlhdCI6MTcxMzk3MTAxNywianRpIjoiZjBjMTIxOGItYjc1Zi00Y2YzLTliYmUtYmI0NjY2YWE1OTlhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9yZWFsbS1jbmoiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNjZjhiNjktZWE2YS00ODUzLThjZjAtZTYxNTUwYzI5YWM2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibG9naW4tcHJvamV0by1jbmoiLCJzZXNzaW9uX3N0YXRlIjoiYmUwYjVhMDktMGRiZi00NmM4LWEwOTMtODNhZTAyODA0NDE4IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwODEiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1yZWFsbS1jbmoiLCJ1bWFfYXV0aG9yaXphdGlvbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUgbWljcm9wcm9maWxlLWp3dCIsInNpZCI6ImJlMGI1YTA5LTBkYmYtNDZjOC1hMDkzLTgzYWUwMjgwNDQxOCIsInVwbiI6IndpbGxpYW4iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IldpbGxpYW4gRmFjaGV0dGkiLCJncm91cHMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXJlYWxtLWNuaiIsInVtYV9hdXRob3JpemF0aW9uIiwidXNlciJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ3aWxsaWFuIiwiZ2l2ZW5fbmFtZSI6IldpbGxpYW4iLCJmYW1pbHlfbmFtZSI6IkZhY2hldHRpIiwiZW1haWwiOiJ3aWxmYWNoZXR0aUBnbWFpbC5jb20ifQ.K5EtYIhX0QWZGldAILlzjnGkq5-fMJzw2d71VdL0QYL7v0XrHnILHbPB52_CzLOCr5n6TmMS4U4CuIyUccgA_gQzAX69Mm-GiFgH-06rAVzciV94XUMrc6S0dSpX_uwM_eHksYW8JiHXiHS5JqikNmui-PYls7Yt_0f7lOQ2_QodX7V5XHIgZLysLI-nrVfJvqVYq2NmbJ6QUSdkCIRBx_I124Sg365jhvCJmOo4LP2q3Z_GAr9szRWWpkVj1lua8ZZVrjqugRYyfERjn06C3exckhCZsCRKPiKe7o3aAP06CcnZFKy8SNnX5-6ZM3qjashiDSHJnthk5KhsJ32NyQ
+@refresh-token=eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1MGJlY2QxOS04OTU0LTQ1ZDYtODkwYS1jMDdiZDk1ZDFkNjYifQ.eyJleHAiOjE3MTM4MzMwODEsImlhdCI6MTcxMzgzMTI4MSwianRpIjoiOGMwYTA2ODctN2Y1Ny00YzA0LWIwZmEtMTdiZGQxMGU0ZTExIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9yZWFsbS1jbmoiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL3JlYWxtLWNuaiIsInN1YiI6IjMwZGE0Njc4LTNjZWItNDdlMC1iYmQ2LWM1YmE2OTUyODlhYiIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJsb2dpbi1wcm9qZXRvLWNuaiIsInNlc3Npb25fc3RhdGUiOiJhZWM4MDJjMC02NDdmLTQ2N2UtODc5Ni1hNTVhNDIzZGU5YTMiLCJzY29wZSI6Im1pY3JvcHJvZmlsZS1qd3QgcHJvZmlsZSBlbWFpbCIsInNpZCI6ImFlYzgwMmMwLTY0N2YtNDY3ZS04Nzk2LWE1NWE0MjNkZTlhMyJ9.CISzRr0rD14k9NeEItj7oCtPjSRH77rOoH8GoQ5mPQb_DWAxMG4o0Dhglt_yEFH3cDh2C0y42TwkvQJaEZy1Ow
+###
+
+# REFRESH TOKEN
+POST {{keycloak}}/{{realm-token}}
+Content-Type: application/x-www-form-urlencoded
+client_id={{client-id}}&refresh_token={{refresh-token}}&grant_type=refresh_token
+
+
+#
+# APPLICATION WITH KEYCLOAK
+#
+
+# GET ALL
+GET {{host}}/api/casos
+Authorization: Bearer {{token}}
+
+# INSERT NEW
+POST {{host}}/api/casos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+{
+    "descricao":"Novo caso"
+}
+
+# DELETE
+DELETE {{host}}/api/casos/552
+Authorization: Bearer {{token}}
+
+# UPDATE OR ALTER
+PUT {{host}}/api/casos/603
+Authorization: Bearer {{token}}
+Content-Type: application/json
+{
+    "descricao":"Caso 603"
+}
+
+# GET SPECIFIC
+GET {{host}}/api/casos/5555
+Authorization: Bearer {{token}}

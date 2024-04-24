@@ -33,34 +33,35 @@ public class CasoJudicialController {
 
     @GetMapping
     public ResponseEntity<List<CasoJudicial>> getAllCasos() {
-        List<CasoJudicial> casos = service.getAllCasos();
+        List<CasoJudicial> casos = service.getAll();
 
         return ResponseEntity.ok(casos);
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<CasoJudicial> getCaseForId(@PathVariable Long id) {
-        CasoJudicial caso = service.getCaseForId(id);
+        CasoJudicial caso = service.findById(id);
 
         return ResponseEntity.ok(caso);
     }
 
     @PostMapping
     public ResponseEntity<CasoJudicial> createCaso(@RequestBody CasoJudicial newCaso) throws CasoDuplicadoException {
-        if(service.existe(newCaso)) {
-           throw new CasoDuplicadoException("Caso Duplicado");
+
+        if(!service.dataValidator(newCaso)) {
+            throw new CasoDuplicadoException("Descrição sem conteúdo");
         }
 
-        service.createCaso(newCaso);
+        service.createCase(newCaso);
 
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(newCaso);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CasoJudicial> updateCaso(@PathVariable Long id, @RequestBody CasoJudicial updatedCaso) {
-        service.updateCaso(id, updatedCaso);
+        CasoJudicial caso = service.updateCase(id, updatedCaso);
         
-        return ResponseEntity.ok(updatedCaso);
+        return ResponseEntity.ok(caso);
     }
     
     @PatchMapping("/{id}")
@@ -73,7 +74,7 @@ public class CasoJudicialController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCase(@PathVariable Long id) {
-        service.deleteCaso(id);
+        service.deleteCase(id);
         
         return ResponseEntity.noContent().build();
     }

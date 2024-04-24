@@ -2,57 +2,59 @@ package br.cnj.projeto.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.cnj.projeto.CasoJudicialRepository;
 import br.cnj.projeto.models.CasoJudicial;
+import br.cnj.projeto.repository.CasosJudiciaisRepository;
+import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class CasoJudicialService {
-    private final CasoJudicialRepository repository;
+    private final CasosJudiciaisRepository repository;
 
     //@Autowired
-    public CasoJudicialService(CasoJudicialRepository repository) {
+    public CasoJudicialService(CasosJudiciaisRepository repository) {
         this.repository = repository;
     }
 
-    public boolean existe(CasoJudicial caso) {
-        for(CasoJudicial casoJudicial: repository.findAll()) 
-            if(casoJudicial.getId() == caso.getId())
-                return true;
+    public boolean dataValidator(CasoJudicial caso) {
+        if(!caso.getDescricao().isEmpty())
+            return true;
         return false;
     }
 
-    public List<CasoJudicial> getAllCasos() {
-        //return repository.findAll();
+    public List<CasoJudicial> getAll() {
         return repository.findAll();
     }
 
-    public CasoJudicial getCaseForId(Long id) {
-        for(CasoJudicial casoJudicial: repository.findAll()) 
-            if(casoJudicial.getId() == id)
-                return casoJudicial;
+    public CasoJudicial findById(Long id) {
+        Optional<CasoJudicial> caso = repository.findById(id);
+        return caso.get();
+    }
+
+    public CasoJudicial createCase(CasoJudicial newCase) {
+        repository.save(newCase);
+
+        return newCase;
+    }
+
+    public CasoJudicial updateCase(long id, CasoJudicial updatedCaso) {     
+        Optional<CasoJudicial> caso = repository.findById(id);
         
-        return null;
+        if(caso.isPresent()) {
+            CasoJudicial casoAtualizado = caso.get();
+            casoAtualizado.setDescricao(updatedCaso.getDescricao());
+            repository.save(casoAtualizado);
+        }
+
+        return caso.get();
     }
-
-    public CasoJudicial createCaso(CasoJudicial newCaso) {
-        repository.addCase(newCaso);
-
-        return newCaso;
-    }
-
-    public CasoJudicial updateCaso(Long id, CasoJudicial updatedCaso) {
-        repository.removeCase(getCaseForId(id));
-        repository.addCase(updatedCaso);
-
-        return updatedCaso;
-    }
-
+    
     public boolean updateCaso(Long id, Map<String, Object> updatesCaso) {  
-        CasoJudicial caso = getCaseForId(id);
+        Optional<CasoJudicial> caso = repository.findById(id);//getCaseForId(id);
         
         for(Map.Entry<String, Object> entry: updatesCaso.entrySet()){
             String chave = entry.getKey();
@@ -68,8 +70,8 @@ public class CasoJudicialService {
         return true;
     }
 
-    public void deleteCaso(Long id) {
-        repository.removeCase(getCaseForId(id));
+    public void deleteCase(Long id) {
+        repository.deleteById(id);
     }
 
 }

@@ -1,0 +1,86 @@
+version: "3"
+
+services:
+  postgres-compose:
+    image: postgres
+    container_name: postgres-compose
+    #restart: always
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - ../../data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - compose-network
+
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    container_name: "pgadmin-compose"
+    #restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "wilfachetti@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+    user: "root:root"
+    volumes:
+      - ../../data/pgadmin:/var/lib/pgadmin
+    ports:
+      - "80:80"
+    #depends_on:
+    #  - postgres-compose
+    networks:
+      - compose-network
+
+  auth:
+    image: quay.io/keycloak/keycloak
+    container_name: keycloak-compose
+    #restart: always
+    environment:
+      #- KC_HOSTNAME_ADMIN=localhost
+      #- KC_PROXY=edge
+      #- KC_HOSTNAME=some-machine.somewhere
+      #- KC_METRICS_ENABLED=true
+      #- KC_HEALTH_ENABLED=true
+      #- KC_LOG_LEVEL=ALL
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=postgres
+      - KC_DB_URL_HOST=postgres-compose
+      - KC_DB_URL_PORT=5432
+      # you must create keycloak database in postgres
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_SCHEMA=public
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-compose
+    command:
+      - start-dev
+    volumes:
+      - ../../data/auth/import:/opt/keycloak/data/import
+    networks:
+      - compose-network
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq-compose
+    #restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ../../data/rabbitmq/data/:/var/lib/rabbitmq/
+      #- ../data/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - compose-network
+
+networks:
+  compose-network:
+    name: compose-network
+    driver: bridge

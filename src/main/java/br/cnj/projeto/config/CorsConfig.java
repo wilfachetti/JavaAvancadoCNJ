@@ -1,4 +1,4 @@
-package br.cnj.projeto.util;
+package br.cnj.projeto.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
