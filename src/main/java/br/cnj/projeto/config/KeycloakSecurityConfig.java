@@ -100,8 +100,7 @@ public class KeycloakSecurityConfig {
                     var roles = (Collection<String>) realmAccess.get(ROLES_CLAIM);
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 } else if (userInfo.hasClaim(GROUPS)) {
-                    Collection<String> roles = (Collection<String>) userInfo.getClaim(
-                        GROUPS);
+                    Collection<String> roles = (Collection<String>) userInfo.getClaim(GROUPS);
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 }
             } else {

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ProducerConfig { 
     
-    @Value(QueueConfig.NAME_FILA)
+    @Value(QueueConfig.QUEUE_NAME)
     private String message;
     
     @Bean public Queue producerQueue() {

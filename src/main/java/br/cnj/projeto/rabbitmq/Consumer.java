@@ -9,14 +9,14 @@ import br.cnj.projeto.models.CasoJudicial;
 
 @Component
 public class Consumer {
-    
-    @RabbitListener(queues = {QueueConfig.NAME_FILA})
+
+    @RabbitListener(queues = { QueueConfig.QUEUE_NAME })
     public void receive(@Payload String fileBody) {
-        System.out.println("RECEBI ESTA MENSAGEM: " + fileBody);
+        System.out.println("CASO JUDICIAL RECEBIDO: " + fileBody);
     }
 
-    @RabbitListener(queues = {QueueConfig.NAME_FILA})
+    @RabbitListener(queues = { QueueConfig.QUEUE_NAME })
     public void receive(@Payload CasoJudicial fileBody) {
-        System.out.println("Caso judicial recebido: " + fileBody);
+        System.out.println("Caso judicial recebido: " + fileBody.toString());
     }
 }

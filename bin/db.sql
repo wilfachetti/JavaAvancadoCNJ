@@ -14,12 +14,29 @@ VALUES
 	('A', 'Descrição caso 03'),
 	('A', 'Descrição caso 04');
 
-DELETE FROM CasosJudiciais WHERE decisao = 'I';
+-- DELETE FROM CasosJudiciais WHERE decisao = 'I';
 */
 
-FROM DATABASE teste;
+DROP DATABASE keycloak;
+CREATE SCHEMA keycloak;
 
-SELECT * FROM CasosJudiciais;
+CREATE USER demouser WITH ENCRYPTED PASSWORD 'demopassword';
+
+GRANT ALL ON DATABASE "teste" TO demouser;
+GRANT ALL ON SCHEMA public,keycloak TO demouser;
+GRANT ALL PRIVILEGES ON TABLE casosjudiciais TO demouser;
+
+CREATE SCHEMA log4j2;
+
+CREATE TABLE log4j2.systemlog(
+   	eventdate timestamp DEFAULT NULL,
+    logger varchar(100),
+    level varchar(100),
+    message varchar(100),
+    exception varchar(100)
+);
+
+SELECT * FROM log4j2.systemlog;
 
 UPDATE CasosJudiciais
 SET decisao='A' 
@@ -30,3 +47,8 @@ SET decisao='C'
 WHERE decisao='A';
 
 DROP TABLE casojudiciais;
+
+DELETE 
+FROM log4j2.systemlog 
+--WHERE exception = '';
+WHERE level = 'ERROR';

@@ -11,22 +11,22 @@ import org.springframework.amqp.core.Queue;
 @Configuration
 public class QueueConfig {
 
-    public static final String NAME_FILA = "Casos";
-    public static final String NAME_EXCHANGE = "ExchangeCasos";
+    public static final String QUEUE_NAME = "Casos";
+    public static final String EXCHANGE_NAME = "ExchangeCasos";
     public static final String ROUTING_KEY = "CriarCaso";
     
     @Bean
-    DirectExchange usuarioExchange() { 
-        return new DirectExchange(NAME_EXCHANGE);
+    DirectExchange userExchange() { 
+        return new DirectExchange(EXCHANGE_NAME);
     }
     
     @Bean
     Queue queue() {
-        return QueueBuilder.durable(NAME_FILA).build();
+        return QueueBuilder.durable(QUEUE_NAME).build();
     }
     
     @Bean
     Binding binding() {
-        return BindingBuilder.bind(queue()).to(usuarioExchange()) .with(ROUTING_KEY);
+        return BindingBuilder.bind(queue()).to(userExchange()) .with(ROUTING_KEY);
     }
 }

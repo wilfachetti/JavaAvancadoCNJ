@@ -10,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import br.cnj.projeto.exceptions.CasoDuplicadoException;
 import br.cnj.projeto.models.CasoJudicial;
 import br.cnj.projeto.services.CasoJudicialService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +26,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/casos")
+@RequestMapping(value = "/api/casos", produces = {"application/json"})
+@Tag(name = "api casos judiciais")
 public class CasoJudicialController {
     private final CasoJudicialService service;
     
@@ -31,6 +36,11 @@ public class CasoJudicialController {
         this.service = service;
     }
 
+    @Operation(summary = "Retorna todos os casos judiciais", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucesso"),
+            @ApiResponse(responseCode = "500", description = "Erro")
+    })
     @GetMapping
     public ResponseEntity<List<CasoJudicial>> getAllCasos() {
         List<CasoJudicial> casos = service.getAll();
@@ -38,7 +48,13 @@ public class CasoJudicialController {
         return ResponseEntity.ok(casos);
     }
     
-    @GetMapping("/{id}")
+    @Operation(summary = "Retorna um caso judicial específico", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucesso"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado"),
+            @ApiResponse(responseCode = "500", description = "Erro")
+    })
+    @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CasoJudicial> getCaseForId(@PathVariable Long id) {
         CasoJudicial caso = service.findById(id);
 
