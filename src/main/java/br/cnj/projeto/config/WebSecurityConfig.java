@@ -18,12 +18,6 @@ public class WebSecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("willian").roles("user").password("{noop}123")
-                // .and()
-                // .withUser("usuario").roles("USUARIO").password("{noop}123")
-                // .and()
-                // .withUser("servidor").roles("SERVIDOR").password("{noop}123")
-                // .and()
-                // .withUser("magistrado").roles("MAGISTRADO").password("{noop}123")
                 .and()
                 .withUser("admin").roles("admin").password("{noop}123");
     
@@ -31,11 +25,10 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+        return http      
                 .authorizeHttpRequests(request -> 
                     request.requestMatchers(new AntPathRequestMatcher("/api/casos/**"))
-                    .hasRole("user")
-                    
+                    .hasRole("user")                    
                 )
                 .authorizeHttpRequests(request -> 
                     request.requestMatchers(new AntPathRequestMatcher("/api/arquivos/**"))
@@ -43,23 +36,10 @@ public class WebSecurityConfig {
                     .anyRequest()
                     .authenticated()
                 )
+
                 .httpBasic(Customizer.withDefaults())
                 //.csrf((csrf) -> csrf.disable())
                 .build();
-
-                // .authorizeHttpRequests(authorize -> authorize
-                // .requestMatchers(HttpMethod.GET, "/api/casos/**").hasAnyRole("USUARIO", "SERVIDOR", "MAGISTRADO", "ADMIN")
-                // .requestMatchers(HttpMethod.POST, "/api/casos/**").hasAnyRole("SERVIDOR", "MAGISTRADO","ADMIN")
-                // .requestMatchers(HttpMethod.PATCH, "/api/casos/**").hasAnyRole("SERVIDOR", "MAGISTRADO")
-                // .requestMatchers(HttpMethod.PUT, "/api/casos/**").hasAnyRole("SERVIDOR", "MAGISTRADO")
-                // .requestMatchers(HttpMethod.DELETE, "/api/casos/**").hasAnyRole("ADMIN")
-                // .requestMatchers(HttpMethod.GET, "/api/arquivo/**").hasAnyRole("USUARIO", "SERVIDOR", "MAGISTRADO", "ADMIN")
-                // .requestMatchers(HttpMethod.POST, "/api/arquivo/**").hasRole("SERVIDOR")
-                // .anyRequest()
-                // .authenticated())
-                // .httpBasic(Customizer.withDefaults())
-                // .csrf((csrf) -> csrf.disable())
-                // .build();
     }     
 
 }

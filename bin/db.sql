@@ -17,26 +17,16 @@ VALUES
 -- DELETE FROM CasosJudiciais WHERE decisao = 'I';
 */
 
-DROP DATABASE keycloak;
-CREATE SCHEMA keycloak;
-
-CREATE USER demouser WITH ENCRYPTED PASSWORD 'demopassword';
-
-GRANT ALL ON DATABASE "teste" TO demouser;
-GRANT ALL ON SCHEMA public,keycloak TO demouser;
-GRANT ALL PRIVILEGES ON TABLE casosjudiciais TO demouser;
-
-CREATE SCHEMA log4j2;
-
-CREATE TABLE log4j2.systemlog(
-   	eventdate timestamp DEFAULT NULL,
-    logger varchar(100),
-    level varchar(100),
-    message varchar(100),
-    exception varchar(100)
-);
-
 SELECT * FROM log4j2.systemlog;
+
+SELECT * FROM casosjudiciais;
+
+DROP TABLE casojudiciais;
+
+DELETE 
+FROM log4j2.systemlog
+--WHERE exception = '';
+WHERE level = 'ERROR';
 
 UPDATE CasosJudiciais
 SET decisao='A' 
@@ -45,10 +35,3 @@ WHERE numero=3;
 UPDATE CasosJudiciais
 SET decisao='C'
 WHERE decisao='A';
-
-DROP TABLE casojudiciais;
-
-DELETE 
-FROM log4j2.systemlog 
---WHERE exception = '';
-WHERE level = 'ERROR';

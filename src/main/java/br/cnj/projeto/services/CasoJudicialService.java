@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.cnj.projeto.dto.CasoJudicialDTO;
+import br.cnj.projeto.mapper.CasoJudicialMapper;
 import br.cnj.projeto.models.CasoJudicial;
 import br.cnj.projeto.repository.CasosJudiciaisRepository;
 import jakarta.transaction.Transactional;
@@ -13,12 +16,9 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class CasoJudicialService {
-    private final CasosJudiciaisRepository repository;
 
-    //@Autowired
-    public CasoJudicialService(CasosJudiciaisRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private CasosJudiciaisRepository repository;
 
     public boolean dataValidator(CasoJudicial caso) {
         if(!caso.getDescricao().isEmpty())
@@ -26,8 +26,8 @@ public class CasoJudicialService {
         return false;
     }
 
-    public List<CasoJudicial> getAll() {
-        return repository.findAll();
+    public List<CasoJudicialDTO> getAll() {
+        return CasoJudicialMapper.INSTANCE.listCasosJudiciaisDTO(repository.findAll());
     }
 
     public CasoJudicial findById(Long id) {
@@ -35,10 +35,10 @@ public class CasoJudicialService {
         return caso.get();
     }
 
-    public CasoJudicial createCase(CasoJudicial newCase) {
+    public CasoJudicialDTO createCase(CasoJudicial newCase) {
         repository.save(newCase);
 
-        return newCase;
+        return CasoJudicialMapper.INSTANCE.casoJudicialToDTO(newCase);
     }
 
     public CasoJudicial updateCase(long id, CasoJudicial updatedCaso) {     

@@ -10,27 +10,28 @@ services:
       POSTGRES_PASSWORD: "postgres"
     volumes:
       - ../../data/postgres:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     ports:
       - "5432:5432"
     networks:
       - compose-network
 
-#  pgadmin-compose:
-#    image: dpage/pgadmin4
-#    container_name: "pgadmin-compose"
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    container_name: "pgadmin-compose"
     #restart: always
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: "wilfachetti@gmail.com"
-#      PGADMIN_DEFAULT_PASSWORD: "pgadmin"
-#    user: "root:root"
-#    volumes:
-#      - ../../data/pgadmin:/var/lib/pgadmin
-#    ports:
-#      - "80:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "user@pgadmin.org"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+    user: "root:root"
+    volumes:
+      - ../../data/pgadmin:/var/lib/pgadmin
+    ports:
+      - "80:80"
     #depends_on:
     #  - postgres-compose
-#    networks:
-#      - compose-network
+    networks:
+      - compose-network
 
   auth:
     image: quay.io/keycloak/keycloak
@@ -46,13 +47,12 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KC_DB=postgres
-      - KC_DB_USERNAME=demouser #postgres
-      - KC_DB_PASSWORD=demopassword #postgres
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=postgres
       - KC_DB_URL_HOST=postgres-compose
       - KC_DB_URL_PORT=5432
-      # you must create keycloak database in postgres
-      - KC_DB_URL_DATABASE=teste #keycloak
-      - KC_DB_SCHEMA=keycloak #public
+      - KC_DB_URL_DATABASE=javacnj
+      - KC_DB_SCHEMA=keycloak 
     ports:
       - "8080:8080"
     depends_on:

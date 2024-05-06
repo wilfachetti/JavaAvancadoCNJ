@@ -1,12 +1,13 @@
 package br.cnj.projeto.controllers;
 
-
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpStatusCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import br.cnj.projeto.dto.CasoJudicialDTO;
 import br.cnj.projeto.exceptions.CasoDuplicadoException;
 import br.cnj.projeto.models.CasoJudicial;
 import br.cnj.projeto.services.CasoJudicialService;
@@ -26,15 +27,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/casos", produces = {"application/json"})
+@RequestMapping(value = "/api/casos", produces = { "application/json" })
 @Tag(name = "api casos judiciais")
-public class CasoJudicialController {
-    private final CasoJudicialService service;
+public class CasoJudicialController {    
     
-    //@Autowired
-    public CasoJudicialController(CasoJudicialService service) {
-        this.service = service;
-    }
+    @Autowired
+    private CasoJudicialService casoJudicialService;
 
     @Operation(summary = "Retorna todos os casos judiciais", method = "GET")
     @ApiResponses(value = {
@@ -42,12 +40,13 @@ public class CasoJudicialController {
             @ApiResponse(responseCode = "500", description = "Erro")
     })
     @GetMapping
-    public ResponseEntity<List<CasoJudicial>> getAllCasos() {
-        List<CasoJudicial> casos = service.getAll();
+    public ResponseEntity<List<CasoJudicialDTO>> getAllCasos() {
+        //List<CasoJudicialDTO> casos = service.getAll();
+        //return ResponseEntity.ok(casos);    
 
-        return ResponseEntity.ok(casos);
+        return new ResponseEntity<>(casoJudicialService.getAll(), HttpStatus.OK);
     }
-    
+
     @Operation(summary = "Retorna um caso judicial específico", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sucesso"),
@@ -56,33 +55,34 @@ public class CasoJudicialController {
     })
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CasoJudicial> getCaseForId(@PathVariable Long id) {
-        CasoJudicial caso = service.findById(id);
+        CasoJudicial caso = casoJudicialService.findById(id);
 
         return ResponseEntity.ok(caso);
     }
 
     @PostMapping
-    public ResponseEntity<CasoJudicial> createCaso(@RequestBody CasoJudicial newCaso) throws CasoDuplicadoException {
+    public ResponseEntity<CasoJudicialDTO> createCaso(@RequestBody CasoJudicial newCaso) throws CasoDuplicadoException {
 
-        if(!service.dataValidator(newCaso)) {
+        if (!casoJudicialService.dataValidator(newCaso)) {
             throw new CasoDuplicadoException("Descrição sem conteúdo");
         }
 
-        service.createCase(newCaso);
+        //service.createCase(newCaso);
+        //return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(newCaso);
 
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(newCaso);
+        return new ResponseEntity<>(casoJudicialService.createCase(newCaso), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CasoJudicial> updateCaso(@PathVariable Long id, @RequestBody CasoJudicial updatedCaso) {
-        CasoJudicial caso = service.updateCase(id, updatedCaso);
-        
+        CasoJudicial caso = casoJudicialService.updateCase(id, updatedCaso);
+
         return ResponseEntity.ok(caso);
     }
-    
+
     @PatchMapping("/{id}")
     public ResponseEntity<String> adjustedCaso(@PathVariable Long id, @RequestBody Map<String, Object> updatesCaso) {
-        if(service.updateCaso(id, updatesCaso))
+        if (casoJudicialService.updateCaso(id, updatesCaso))
             return ResponseEntity.ok("Sucesso ao atualizar o caso " + id);
         else
             return ResponseEntity.badRequest().body("Falha ao atualizar o caso " + id);
@@ -90,8 +90,8 @@ public class CasoJudicialController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCase(@PathVariable Long id) {
-        service.deleteCase(id);
-        
+        casoJudicialService.deleteCase(id);
+
         return ResponseEntity.noContent().build();
     }
 
