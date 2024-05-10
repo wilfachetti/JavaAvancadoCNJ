@@ -59,11 +59,13 @@ public class CasoJudicialDaoImpl implements CasoJudicialDAO {
     @Override
     public void partialUpdate(int id, CasoJudicial casoJudicial) {
         CasoJudicial existingCasoJudicial = findById(id);
+        
         if(existingCasoJudicial != null){
             if(casoJudicial.getDescricao() != null) {
+                existingCasoJudicial.setDecisao(casoJudicial.getDecisao());
                 existingCasoJudicial.setDescricao(casoJudicial.getDescricao());
             }
-            // ... (demais campos, como descrição e decisão)
+
             entityManager.merge(existingCasoJudicial);
         }
     }

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/arquivos")
 public class ArquivoController {
+
     private static final String DIR_UPLOAD = "uploads/";
     private static final String DIR_DOWNLOAD = "downloads/";
     
@@ -35,7 +36,7 @@ public class ArquivoController {
         } catch (IOException e) {
             e.printStackTrace();
             
-            return new ResponseEntity<>("Falha ao fazer upload do arquivo", HttpStatus. INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Falha ao fazer upload do arquivo", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

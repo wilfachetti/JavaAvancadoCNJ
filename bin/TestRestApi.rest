@@ -1,11 +1,11 @@
 ###
-# WITH SPRING SECURITY
+# CONFIG
 @host=http://localhost:8081
 @user=usuario
 @password=123456
 ###
 
-### SIMPLE AUTH
+### SIMPLE AUTH WITH SPRING SECURITY
 # GET ALL
 GET {{host}}/api/casos
 Authorization: Basic {{user}} {{password}}
@@ -20,7 +20,6 @@ Authorization: Basic {{user}} {{password}}
 Content-Type: application/json
 
 {
-    "id":"6",
     "descricao":"Caso 06"
 }
 
@@ -29,8 +28,8 @@ DELETE {{host}}/api/casos/6
 Authorization: Basic {{user}} {{password}}
 
 
-# KEYCLOAK
 ###
+# AUTH WITH KEYCLOAK
 @keycloak=http://localhost:8080
 @realm-token=realms/realm-cnj/protocol/openid-connect/token
 @client-id=keycloak-cnj
@@ -44,16 +43,15 @@ POST {{keycloak}}/{{realm-token}}
 Content-Type: application/x-www-form-urlencoded
 grant_type=password&client_id={{client-id}}&username={{user}}&password={{password}}
 
-###
-@token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJyQ0p1TGxoQXh5VWV6SjJEemNhWkZOT2tiSVYwQXNjZXZHaThkanlCcklFIn0.eyJleHAiOjE3MTQ4NzI0MDksImlhdCI6MTcxNDg3MjEwOSwianRpIjoiNTIwZDA0NmItMzE3Yy00NWMwLTgxODMtM2UzNDVhNWJlZWMyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9yZWFsbS1jbmoiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiZWU0NjNlOWUtMmZlMy00M2QwLWFlMDUtMjU0OGI4MDU2ZjkxIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia2V5Y2xvYWstY25qIiwic2Vzc2lvbl9zdGF0ZSI6IjM0OTFhOWVmLTg1ZWItNDA0YS04ZWM0LTM5YWQ3YmY3YjhhMCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtcmVhbG0tY25qIiwidW1hX2F1dGhvcml6YXRpb24iLCJ1c2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJtaWNyb3Byb2ZpbGUtand0IHByb2ZpbGUgZW1haWwiLCJzaWQiOiIzNDkxYTllZi04NWViLTQwNGEtOGVjNC0zOWFkN2JmN2I4YTAiLCJ1cG4iOiJ1c3VhcmlvIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJVc3VhcmlvIFNhbGRhbmhhIiwiZ3JvdXBzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1yZWFsbS1jbmoiLCJ1bWFfYXV0aG9yaXphdGlvbiIsInVzZXIiXSwicHJlZmVycmVkX3VzZXJuYW1lIjoidXN1YXJpbyIsImdpdmVuX25hbWUiOiJVc3VhcmlvIiwiZmFtaWx5X25hbWUiOiJTYWxkYW5oYSIsImVtYWlsIjoidXN1YXJpb0BnbWFpbC5jb20ifQ.V5ZzUV0jVij31ACKBeEIWBVbUHuLAUdTGr8we4B31S3T-3APwN50vuDzFg0HIfooMg3Ufrh-6wZj18RJHZkx4jc46qkJkcZiK1xQjieQ4UwS557jmVT5nbOPJgiSEJzI2J9BkxrOk2STf5MZ302JyX0WKXXhq2gW2-WlRwWRZc7U-vpwnju7ZCX8LWIudSAKtyJSqCLk5aoZ_Ep_B3xF_fi6Jetj0C8jVOzYdBi_kcw0TJFzAp1nlTwB-ENAQM0WBH0YF5Xa1TiA6uw4FMJwsyXtxjWrVlEJsp3_v1R9EyNkuBVudwujwdy3HSnfspjVKd4yHVpBrSPbmFYcZ0zI_A
-@refresh-token=token-refresh
-###
-
 # REFRESH TOKEN
 POST {{keycloak}}/{{realm-token}}
 Content-Type: application/x-www-form-urlencoded
 client_id={{client-id}}&refresh_token={{refresh-token}}&grant_type=refresh_token
 
+###
+@token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJyQ0p1TGxoQXh5VWV6SjJEemNhWkZOT2tiSVYwQXNjZXZHaThkanlCcklFIn0.eyJleHAiOjE3MTUzNTY2MjAsImlhdCI6MTcxNTM1NjMyMCwianRpIjoiYTRlMTJlZWYtZDkyMy00NDc0LWExZmEtZDExN2EyNDhhMmM2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9yZWFsbS1jbmoiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiZWU0NjNlOWUtMmZlMy00M2QwLWFlMDUtMjU0OGI4MDU2ZjkxIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia2V5Y2xvYWstY25qIiwic2Vzc2lvbl9zdGF0ZSI6ImM3OGY2N2JiLTYzNTktNGI2OC04ZjIyLTc2MzliZTVjMDZlNyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtcmVhbG0tY25qIiwidW1hX2F1dGhvcml6YXRpb24iLCJ1c2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJtaWNyb3Byb2ZpbGUtand0IHByb2ZpbGUgZW1haWwiLCJzaWQiOiJjNzhmNjdiYi02MzU5LTRiNjgtOGYyMi03NjM5YmU1YzA2ZTciLCJ1cG4iOiJ1c3VhcmlvIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJVc3VhcmlvIFNhbGRhbmhhIiwiZ3JvdXBzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1yZWFsbS1jbmoiLCJ1bWFfYXV0aG9yaXphdGlvbiIsInVzZXIiXSwicHJlZmVycmVkX3VzZXJuYW1lIjoidXN1YXJpbyIsImdpdmVuX25hbWUiOiJVc3VhcmlvIiwiZmFtaWx5X25hbWUiOiJTYWxkYW5oYSIsImVtYWlsIjoidXN1YXJpb0BnbWFpbC5jb20ifQ.CLClxsHhiUPlVLbppISN4CNhzozTXq8oOfl0N--_2nZLLODeoHAPN8lH8a-MN8g9ULuit62Py09HDSPTAAN6qh8XmpPrgqm3sYMjtdQ4UF-MOVLdiALdZH2pgE0xmBakXipOz-9dJCP7IqUOdsgx0PFpbzHlbXQ1JysUL21BpJaUXLpPwgaWbW9gNvS3eXRU1dHv8soeAgAv8Zt-4i4EmzefmzGLKW9euA2cmPtxdJiTk8jIw_Vq_sjNrQX2_UCGT4zzTuBHqz_zEXC8I_kxBEcaRfNW0ITMM5pECgO6_neYi6GlzTT-1Q9LwKfd6K_RwQCoojHY24NpbaJHPciB4w
+@refresh-token=token-refresh
+###
 
 #
 # APPLICATION WITH KEYCLOAK
@@ -68,7 +66,8 @@ POST {{host}}/api/casos
 Authorization: Bearer {{token}}
 Content-Type: application/json
 {
-    "descricao":"Novo caso"
+    "decisao":"A",
+    "descricao":"Caso A"
 }
 
 # DELETE
@@ -87,50 +86,30 @@ Content-Type: application/json
 GET {{host}}/api/casos/603
 Authorization: Bearer {{token}}
 
+# SENDING FILE
+POST {{host}}/api/arquivos/upload/
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: multipart/form-data; boundary=EnvioArquivo
+
+--EnvioArquivo
+Content-Disposition: form-data; name="file"; filename="DocTest.pdf"
+Content-Type: application/octet-stream
+
+< DocTest.pdf
+--EnvioArquivo
+
+
 # SENDING MESSAGE RABBITMQ
-POST {{host}}/api/queue
+POST {{host}}/api/queue/sender
 Authorization: Bearer {{token}}
 Content-Type: application/raw
 "Mensagem transmitida pelo httpyac"
 
-POST {{host}}/api/queue
+POST {{host}}/api/queue/sender
 Authorization: Bearer {{token}}
 Content-Type: application/json
 {
-    "descricao":"Caso RabbitMQ"
-}
-
-# ACTUATOR DEFAULT
-GET {{host}}/actuator/metrics
-Authorization: Bearer {{token}}
-
-# ACTUATOR WITH CHANGES
-GET http://localhost:1996/portal-admin/metrics
-Authorization: Bearer {{token}}
-
-
-# TESTS OTHER CONTROLLERS
-GET {{host}}/user
-Authorization: Bearer {{token}}
-
-POST {{host}}/user
-Authorization: Bearer {{token}}
-Content-Type: application/json
-{
-    "name":"Ciclano",
-    "email":"ciclano@gmail.com",
-    "password":"ciclano123"
-}
-
-GET {{host}}/product
-Authorization: Bearer {{token}}
-
-POST {{host}}/product
-Authorization: Bearer {{token}}
-Content-Type: application/json
-{
-    "name":"iPhone",
-    "description":"Bionic",
-    "manufacturer":"Apple",
-    "price":"2000"
+    "decisao": "C",
+    "descricao":"New Caso RabbitMQ"
 }

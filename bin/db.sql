@@ -1,4 +1,4 @@
--- Active: 1713643215854@@localhost@5432@teste
+-- Active: 1713643215854@@localhost@5432@javacnj
 /*
 CREATE TABLE CasosJudiciais (
 	numero SERIAL PRIMARY KEY,
@@ -21,7 +21,7 @@ SELECT * FROM log4j2.systemlog;
 
 SELECT * FROM casosjudiciais;
 
-DROP TABLE casojudiciais;
+DROP TABLE casosjudiciais;
 
 DELETE 
 FROM log4j2.systemlog

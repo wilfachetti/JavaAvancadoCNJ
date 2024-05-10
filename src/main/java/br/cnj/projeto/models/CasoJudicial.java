@@ -18,5 +18,6 @@ public class CasoJudicial {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private char decisao;
     private String descricao;
 }
