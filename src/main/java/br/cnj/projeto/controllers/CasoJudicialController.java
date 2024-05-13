@@ -11,6 +11,7 @@ import br.cnj.projeto.dto.CasoJudicialDTO;
 import br.cnj.projeto.exceptions.CasoDuplicadoException;
 import br.cnj.projeto.models.CasoJudicial;
 import br.cnj.projeto.services.CasoJudicialService;
+import br.cnj.projeto.services.CasoJudicialServiceDAO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,7 +34,8 @@ public class CasoJudicialController {
     
     @Autowired
     private CasoJudicialService casoJudicialService;
-
+    //private CasoJudicialServiceDAO casoJudicialService;
+    
     @Operation(summary = "Retorna todos os casos judiciais", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sucesso"),

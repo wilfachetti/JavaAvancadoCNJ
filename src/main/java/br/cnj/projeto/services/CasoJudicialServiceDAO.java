@@ -2,23 +2,22 @@ package br.cnj.projeto.services;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.cnj.projeto.dao.impl.CasoJudicialDaoImpl;
 import br.cnj.projeto.dto.CasoJudicialDTO;
 import br.cnj.projeto.mapper.CasoJudicialMapper;
 import br.cnj.projeto.models.CasoJudicial;
-import br.cnj.projeto.repository.CasosJudiciaisRepository;
 import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class CasoJudicialService {
+public class CasoJudicialServiceDAO {
 
     @Autowired
-    private CasosJudiciaisRepository repository;
+    private CasoJudicialDaoImpl repository;
 
     public boolean dataValidator(CasoJudicial caso) {
         if(!caso.getDescricao().isEmpty())
@@ -31,8 +30,7 @@ public class CasoJudicialService {
     }
 
     public CasoJudicial findById(Long id) {
-        Optional<CasoJudicial> caso = repository.findById(id);
-        return caso.get();
+        return repository.findById(id);
     }
 
     public CasoJudicialDTO createCase(CasoJudicial newCase) {
@@ -42,20 +40,20 @@ public class CasoJudicialService {
     }
 
     public CasoJudicial updateCase(long id, CasoJudicial updatedCaso) {     
-        Optional<CasoJudicial> caso = repository.findById(id);
+        CasoJudicial caso = findById(id);
         
-        if(caso.isPresent()) {
-            CasoJudicial casoAtualizado = caso.get();
+        if(caso != null) {
+            CasoJudicial casoAtualizado = caso;
             casoAtualizado.setDecisao(updatedCaso.getDecisao());
             casoAtualizado.setDescricao(updatedCaso.getDescricao());
             repository.save(casoAtualizado);
         }
 
-        return caso.get();
+        return caso;
     }
     
     public boolean updateCaso(Long id, Map<String, Object> updatesCaso) {  
-        Optional<CasoJudicial> caso = repository.findById(id);//getCaseForId(id);
+        CasoJudicial caso = findById(id);//getCaseForId(id);
         
         for(Map.Entry<String, Object> entry: updatesCaso.entrySet()){
             String chave = entry.getKey();
@@ -72,7 +70,7 @@ public class CasoJudicialService {
     }
 
     public void deleteCase(Long id) {
-        repository.deleteById(id);
+        repository.delete(id);
     }
 
 }

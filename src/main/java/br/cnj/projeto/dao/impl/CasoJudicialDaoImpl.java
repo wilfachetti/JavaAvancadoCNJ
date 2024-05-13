@@ -23,7 +23,7 @@ public class CasoJudicialDaoImpl implements CasoJudicialDAO {
     }
     
     @Override
-    public CasoJudicial findById(int id) {
+    public CasoJudicial findById(Long id) {
         return entityManager.find(CasoJudicial.class, id);
     }
 
@@ -57,7 +57,7 @@ public class CasoJudicialDaoImpl implements CasoJudicialDAO {
     }
 
     @Override
-    public void partialUpdate(int id, CasoJudicial casoJudicial) {
+    public void partialUpdate(Long id, CasoJudicial casoJudicial) {
         CasoJudicial existingCasoJudicial = findById(id);
         
         if(existingCasoJudicial != null){
@@ -71,9 +71,10 @@ public class CasoJudicialDaoImpl implements CasoJudicialDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         CasoJudicial casoJudicial = findById(id);
         if(casoJudicial != null)
             entityManager.remove(casoJudicial);
     }
+
 }
